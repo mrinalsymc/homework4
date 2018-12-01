@@ -14,6 +14,7 @@ var config = require('./lib/config');
 var StringDecoder = require('string_decoder').StringDecoder;
 const util = require('util');
 var debug = util.debuglog('index');
+var cli = require('./lib/cli');
 
 unifiedServerHandling = (req, res) => {
     var parsedUrl = url.parse(req.url, true);
@@ -145,3 +146,7 @@ httpServer.listen(config.httpPort, function() {
 httpsServer.listen(config.httpsPort, function() {
     console.log('\x1b[35m%s\x1b[0m', `now i am listening on httpsPort: ${config.httpsPort}, mode: ${config.envName}`);
 });
+
+setTimeout(function() {
+    cli.init();
+}, 50)
