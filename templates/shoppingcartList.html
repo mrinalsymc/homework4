@@ -1,0 +1,35 @@
+<h1>Shopping cart</h1>
+<h2>View your shopping cart</h2>
+<hr />
+
+<table id="shoppingCartTable">
+  <tr>
+    <th>Item</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>quantity</th>
+    <th>ADD</th>
+    <th>REMOVE</th>
+  </tr>
+
+</table>
+<div id="totalText" class="ctaWrapper">
+  Total Amount: 
+</div>
+<div id="totalamount" class="ctaWrapper">
+   
+</div>
+
+<div id="checkout" class="ctaWrapper">
+    <div class="formWrapper">
+      <form id="checkout" action="/api/checkout" method="POST">
+        <div class="formError"></div>
+        <div class="formSuccess">You have paid successfully</div>
+        <div class="warning">This will charge you!</div>
+        <input class="hiddenSourceTokenInput" type="hidden" name="sourceToken" value="tok_visa"/>
+        <div class="inputWrapper ctaWrapper">
+          <button type="submit" class="cta green">Charge</button>
+        </div>
+      </form>
+    </div>
+</div>

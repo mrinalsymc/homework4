@@ -1,0 +1,17 @@
+[
+    {
+      "id": "p1",
+      "description": "Pepporoni delight",
+      "price": 4.99
+    },
+    {
+      "id": "p2",
+      "description": "Chicken Barbecue",
+      "price": 7.99
+    },
+    {
+      "id": "p3",
+      "description": "Vegeterian Paradise",
+      "price": 8.99
+    }
+]

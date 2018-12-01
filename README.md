@@ -1,0 +1,135 @@
+#APIs
+
+## /users
+This can be used to create, edit and delete a user
+
+### Creating a user
+```
+curl -X POST \
+  http://localhost:3000/api/users \
+  -d '{
+	"name":"mrinal",
+	"email":"mrinalr@gmail.com",
+	"address":"Some address",
+	"password":"qwer1234"
+}'
+```
+
+### Editing a user
+
+* For editing, the user needs to `/login` first, which will provide `token`.
+* `email` is mandatory, `address`, `name`, `password` are optional but at least one need to be present.
+
+```
+curl -X PUT \
+  http://localhost:3000/api/users \
+  -H 'token: 0a2qv1xotgu02ittyev2' \
+  -d '{
+	"email":"mrinalr@gmail.com",
+	"address":"some address1",
+	"name":"mrinal_khanvilkar1",
+	"password":"qwer1234"
+}'
+```
+
+### Deleting a user
+
+* For deleting, the user needs to `/login` first, which will provide `token`.
+
+```
+curl -X DELETE \
+  http://localhost:3000/api/users \
+  -H 'token: 0a2qv1xotgu02ittyev2'
+```
+
+## /login
+
+```
+curl -X POST \
+  http://localhost:3000/api/login \
+  -d '{
+	"email":"mrinalr@gmail.com",
+	"password":"qwer1234"
+}'
+```
+This will return the following response
+```
+{"Data":{"id":"vsw3qpxc36ueuc8ibhpz","expires":1542440122569,"email":"mrinalr@gmail.com"}}
+```
+the `id` is the `token` which needs to be passed for any further actions
+
+## /logout
+* For logging out, the user needs to `/login` first, which will provide `token`.
+
+```
+curl -X GET \
+  http://localhost:3000/api/logout \
+ -H 'token: vsw3qpxc36ueuc8ibhpz'
+```
+
+## /menu
+
+* For getting a menu, the user needs to `/login` first, which will provide `token`.
+
+```
+ curl -X GET \
+  http://localhost:3000/api/menu \
+  -H 'token: o8bqkwpb3c5t7nfu641v'
+```
+
+## /shoppingcart
+
+### Adding an item in the shopping cart
+
+* For adding/editing the shopping cart, the user needs to `/login` first, which will provide `token`.
+
+```
+curl -X POST \
+  http://localhost:3000/api/shoppingcart \
+  -H 'token: w9sck8bx9ti345mhselv' \
+  -d '{
+	"menuItemId":"p3",
+	"quantity":1
+}'
+```
+
+### Getting the items from the shopping cart
+* For getting the shopping cart, the user needs to `/login` first, which will provide `token`.
+
+```
+curl -X GET \
+  http://localhost:3000/api/shoppingcart \
+  -H 'token: o8bqkwpb3c5t7nfu641v'
+```
+
+
+### Editing/Deleting items in the shopping cart
+* For deleting an item, simply pass `quantity = 0` below
+
+```
+curl -X PUT \
+  http://localhost:3000/api/shoppingcart \
+  -H 'token: w9sck8bx9ti345mhselv' \
+  -d '{
+	"menuItemId":"p3",
+	"quantity":4
+}'
+```
+
+## /checkout
+
+Also the user is assumed to be logged in already and thus will be provided with a `token`.
+
+This also assumes that `stripe` has already processed the users paument information and returned a `Stripe token`. For reference look at https://stripe.com/docs/quickstart
+
+```
+curl -X POST \
+  http://localhost:3000/api/checkout \
+  -H 'token: w9sck8bx9ti345mhselv' \
+  -d '{
+	"sourceToken":"tok_visa"
+}'
+```
+We are using a test `Stripe token = tok_visa` in our case.
+
+Once the payment is done a mail will be sent to the users email (using mailgun, be sure to look at lib/config.js. you will have to change those settings) along with the items which the user had added. Also the shopping cart will be deleted.
